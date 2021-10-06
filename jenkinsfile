@@ -1,0 +1,19 @@
+node {
+  stage('Init') {
+    checkout scm
+  }
+  
+  stage('init'){
+                sh """
+                terraform init -input=false -reconfigure
+                """
+            }    
+ stage('plan'){
+                sh "terraform plan -out=tfplan"
+            }  
+ stage('Apply'){
+                input 'Apply Plan'
+                sh "terraform apply -input=false tfplan"
+            }
+
+}
